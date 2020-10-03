@@ -52,7 +52,7 @@ if dein#load_state('/Users/sudeep/.nvim')
   call dein#add('vimwiki/vimwiki')
   call dein#add('keith/swift.vim')
   call dein#add('dhruvasagar/vim-table-mode')
-  call dein#add('ludovicchabant/vim-gutentags')
+  call dein#add('plasticboy/vim-markdown')
   "This would provide support for ctags
   call dein#add('tpope/vim-bundler')  
   call dein#add('tpope/vim-ruby')  
