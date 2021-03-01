@@ -14,7 +14,6 @@ if dein#load_state('/Users/sudeep/.nvim')
   " Required:
   call dein#add('/Users/sudeep/.nvim/repos/github.com/Shougo/dein.vim')
 
-
   " Add or remove your plugins here like this:
   " provide Nerdree and currently <leader>-t toggle it and  <leader>-f find
   " current file , m on Nerdtree tab is awesome
@@ -37,6 +36,7 @@ if dein#load_state('/Users/sudeep/.nvim')
   call dein#add('SirVer/ultisnips')
   "this provide the snippets
   call dein#add('honza/vim-snippets')
+  call dein#add('juliosueiras/vim-terraform-completion')
   call dein#add('vim-airline/vim-airline')
   call dein#add('tpope/vim-fugitive')
   call dein#add('tpope/vim-dadbod')
@@ -54,8 +54,11 @@ if dein#load_state('/Users/sudeep/.nvim')
   call dein#add('dhruvasagar/vim-table-mode')
   call dein#add('plasticboy/vim-markdown')
   "This would provide support for ctags
-  call dein#add('tpope/vim-bundler')  
-  call dein#add('tpope/vim-ruby')  
+  call dein#add('tpope/vim-bundler')
+  call dein#add('sjl/vitality.vim')
+  call dein#add('elzr/vim-json')
+  call dein#add('chrisbra/csv.vim')
+  call dein#add('hashivim/vim-terraform')
   " Required:
   call dein#end()
   call dein#save_state()
@@ -65,9 +68,9 @@ filetype plugin indent on
 syntax enable
 
 " If you want to install not installed plugins on startup.
-if dein#check_install()
-  call dein#install()
-endif
+"if dein#check_install()
+"  call dein#install()
+"endif
 
 "End dein Scripts-------------------------
 set rtp+=/usr/local/opt/fzf
@@ -78,16 +81,6 @@ set expandtab
 hi Search ctermbg=Red
 set number
 nnoremap <C-p> :<C-u>Rg<CR>
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-highlight Cursor guifg=white guibg=black
-highlight iCursor guifg=white guibg=steelblue
-set guicursor=n-v-c:block-Cursor
-set guicursor+=i:ver100-iCursor
-set guicursor+=n-v-c:blinkon0
-set guicursor+=i:blinkwait10
-
 "Set leader
 let mapleader=","
 
@@ -124,10 +117,35 @@ vnoremap <leader>" <esc>`<<esc>i"<esc>`>la"<esc>
 "
 "http://signal0.com/2012/07/24/vim_crosshairs.html
 
-  hi CursorLine   cterm=NONE ctermbg=235
-  hi CursorColumn cterm=NONE ctermbg=235
-  set cursorline! cursorcolumn!
-  nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
+  "hi CursorLine   cterm=NONE ctermbg=235
+  "hi CursorColumn cterm=NONE ctermbg=235
+  "set cursorline! cursorcolumn!
+  "nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
+
+nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
+augroup CursorLine
+    au!
+    hi CursorLine   cterm=NONE ctermbg=238
+    hi CursorColumn cterm=NONE ctermbg=235
+  " set cursorline! cursorcolumn!
+    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    au VimEnter,WinEnter,BufWinEnter * setlocal cursorcolumn
+    au WinLeave * setlocal nocursorline
+augroup END
+
+  if exists('$TMUX')
+  let &t_SI = "\ePtmux;\e\e[5 q\e\\"
+  let &t_EI = "\ePtmux;\e\e[2 q\e\\"
+else
+  let &t_SI = "\e[5 q"
+  let &t_EI = "\e[2 q"
+endif
+
+" Change cursor shape between insert and normal mode in iTerm2.app
+"if $TERM_PROGRAM =~ "iTerm.app"
+"    let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+"    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+"endif
 
 "Ale Config
 let g:ale_completion_enable = 1
@@ -142,6 +160,7 @@ let g:ale_linters = {
 \ 'swift': ['swiftlint'],
 \ }
 highlight ALEWarning ctermbg=227
+"highlight ALEWarning ctermbg=none cterm=underline
 
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 set relativenumber
@@ -208,4 +227,5 @@ let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Todo
 
 " Border style (rounded / sharp / horizontal)
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Todo', 'border': 'sharp' } }
+
 
